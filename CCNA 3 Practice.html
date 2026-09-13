@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OSPF Practice Quiz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f4f7fa;
+  --line: #dfe7f1;
+  --surface: #ffffff;
+  --surface-soft: #f7f9fc;
+  --text: #313b4c;
+  --text-muted: #76839a;
+  --text-faint: #a4aec1;
+  --accent: #7c8fe0;
+  --accent-deep: #5f6fc9;
+  --accent-soft: #edf0fc;
+  --accent-2: #6fbf9b;
+  --accent-2-soft: #e6f6ef;
+  --success: #4fa980;
+  --success-soft: #e7f6ef;
+  --success-line: #bfe4d3;
+  --error: #d97b73;
+  --error-soft: #fbeae8;
+  --error-line: #f0c7c2;
+  --shadow-sm: 0 2px 10px -4px rgba(49, 59, 76, 0.12);
+  --shadow-md: 0 14px 34px -16px rgba(49, 59, 76, 0.22);
+  --radius-lg: 22px;
+  --radius-md: 14px;
+  --radius-sm: 10px;
+  --radius-pill: 999px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(circle at 4px 4px, var(--line) 1.6px, transparent 1.7px);
+  background-size: 42px 42px;
+  color: var(--text);
+  font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, .heading-font {
+  font-family: 'Quicksand', 'Nunito', sans-serif;
+  font-weight: 700;
+  margin: 0;
+  color: var(--text);
+}
+
+button {
+  font-family: inherit;
+}
+
+.wrap {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 40px 20px 64px;
+}
+
+@media (max-width: 480px) {
+  .wrap {
+    padding: 28px 16px 48px;
+  }
+}
+
+/* ---------- focus ---------- */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible + label,
+.choice:focus-within {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ---------- buttons ---------- */
+.btn {
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 13px 26px;
+  font-weight: 700;
+  font-size: 15.5px;
+  font-family: 'Quicksand', sans-serif;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease, opacity 0.15s ease;
+  letter-spacing: 0.01em;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #ffffff;
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--accent-deep);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-primary:disabled {
+  background: #c9cfe8;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-muted);
+  padding: 10px 16px;
+}
+
+.btn-ghost:hover {
+  color: var(--accent-deep);
+}
+
+.btn-outline {
+  background: var(--surface);
+  color: var(--accent-deep);
+  border: 1.5px solid var(--accent-soft);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-outline:hover {
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.btn-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 26px;
+}
+
+/* ---------- header ---------- */
+.page-header {
+  margin-bottom: 30px;
+}
+
+.page-header h1 {
+  font-size: 30px;
+  letter-spacing: 0.01em;
+}
+
+.page-header p {
+  margin: 8px 0 0;
+  color: var(--text-muted);
+  font-size: 15.5px;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+  gap: 12px;
+}
+
+.topbar .module-name {
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--text-muted);
+}
+
+/* ---------- progress ---------- */
+.progress-track {
+  height: 8px;
+  background: var(--accent-soft);
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  border-radius: var(--radius-pill);
+  transition: width 0.35s ease;
+}
+
+.progress-label {
+  font-size: 13.5px;
+  color: var(--text-faint);
+  margin-bottom: 24px;
+}
+
+/* ---------- resume card ---------- */
+.resume-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background: var(--accent-soft);
+  border: 1.5px solid #dce1f7;
+  border-radius: var(--radius-lg);
+  padding: 18px 22px;
+  margin-bottom: 22px;
+}
+
+.resume-card .resume-text {
+  min-width: 0;
+}
+
+.resume-card .resume-label {
+  font-size: 12.5px;
+  text-transform: none;
+  color: var(--accent-deep);
+  font-weight: 700;
+  font-family: 'Quicksand', sans-serif;
+  margin-bottom: 3px;
+}
+
+.resume-card .resume-detail {
+  font-size: 14.5px;
+  color: var(--text-muted);
+}
+
+/* ---------- module tiles ---------- */
+.module-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.module-tile {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  width: 100%;
+  text-align: left;
+  background: var(--surface);
+  border: none;
+  border-left: 5px solid var(--tile-accent, var(--accent));
+  border-radius: var(--radius-md);
+  padding: 20px 22px;
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.module-tile:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.module-tile .num {
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 700;
+  font-size: 26px;
+  color: var(--tile-accent, var(--accent));
+  background: var(--tile-accent-soft, var(--accent-soft));
+  width: 46px;
+  height: 46px;
+  min-width: 46px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.module-tile .info {
+  min-width: 0;
+  flex: 1;
+}
+
+.module-tile .info .title {
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 700;
+  font-size: 17px;
+  margin-bottom: 3px;
+}
+
+.module-tile .info .subtitle {
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.module-tile .count {
+  font-size: 12.5px;
+  color: var(--text-muted);
+  background: var(--surface-soft);
+  border-radius: var(--radius-pill);
+  padding: 5px 12px;
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+.menu-footnote {
+  margin-top: 26px;
+  font-size: 13.5px;
+  color: var(--text-faint);
+  text-align: center;
+}
+
+/* ---------- quiz card ---------- */
+.card {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  padding: 26px 26px 24px;
+  box-shadow: var(--shadow-sm);
+}
+
+@media (max-width: 480px) {
+  .card {
+    padding: 20px 18px;
+  }
+}
+
+.section-tag {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  font-family: 'Quicksand', sans-serif;
+  color: var(--accent-deep);
+  background: var(--accent-soft);
+  border-radius: var(--radius-pill);
+  padding: 4px 12px;
+  margin-bottom: 14px;
+}
+
+.question-text {
+  font-size: 19px;
+  font-weight: 600;
+  line-height: 1.45;
+  margin-bottom: 6px;
+}
+
+.multi-hint {
+  font-size: 13.5px;
+  color: var(--text-muted);
+  margin-bottom: 18px;
+}
+
+.choices {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.choice {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 1.5px solid #e7ebf3;
+  background: var(--surface-soft);
+  border-radius: var(--radius-md);
+  padding: 13px 16px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.choice:hover {
+  border-color: var(--accent);
+}
+
+.choice input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.choice .mark {
+  width: 21px;
+  height: 21px;
+  min-width: 21px;
+  border-radius: 50%;
+  border: 2px solid #c7cfe4;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.choice.multi .mark {
+  border-radius: 6px;
+}
+
+.choice .mark::after {
+  content: "";
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0;
+  transform: scale(0.5);
+  transition: opacity 0.12s ease, transform 0.12s ease;
+}
+
+.choice.multi .mark::after {
+  width: 12px;
+  height: 7px;
+  border-radius: 1px;
+  background: transparent;
+  border-left: 2.5px solid #fff;
+  border-bottom: 2.5px solid #fff;
+  transform: rotate(-45deg) scale(0.6) translateY(-1px);
+}
+
+.choice input:checked + .mark {
+  border-color: var(--accent);
+  background: var(--accent);
+}
+
+.choice.multi input:checked + .mark {
+  background: var(--accent);
+}
+
+.choice input:checked + .mark::after {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.choice.multi input:checked + .mark::after {
+  opacity: 1;
+  transform: rotate(-45deg) scale(1) translateY(-1px);
+}
+
+.choice .choice-text {
+  font-size: 15.5px;
+  line-height: 1.4;
+}
+
+.choice input:disabled ~ .choice-text {
+  color: var(--text);
+}
+
+.choice.disabled {
+  cursor: default;
+}
+
+.choice.is-correct {
+  border-color: var(--success-line);
+  background: var(--success-soft);
+}
+
+.choice.is-correct .mark {
+  border-color: var(--success);
+}
+
+.choice.is-correct .mark::after {
+  background: var(--success);
+  opacity: 1;
+  transform: scale(1);
+}
+
+.choice.is-correct.multi .mark::after {
+  background: transparent;
+}
+
+.choice.is-wrong {
+  border-color: var(--error-line);
+  background: var(--error-soft);
+}
+
+.choice.is-wrong .mark {
+  border-color: var(--error);
+}
+
+.choice.is-wrong .mark::after {
+  background: var(--error);
+}
+
+.choice.is-wrong.multi .mark::after {
+  background: transparent;
+  border-color: #fff;
+}
+
+/* ---------- feedback ---------- */
+.feedback {
+  margin-top: 20px;
+  border-radius: var(--radius-md);
+  padding: 16px 18px;
+}
+
+.feedback.correct {
+  background: var(--success-soft);
+  border: 1.5px solid var(--success-line);
+}
+
+.feedback.wrong {
+  background: var(--error-soft);
+  border: 1.5px solid var(--error-line);
+}
+
+.feedback .verdict {
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 700;
+  font-size: 15.5px;
+  margin-bottom: 6px;
+}
+
+.feedback.correct .verdict {
+  color: var(--success);
+}
+
+.feedback.wrong .verdict {
+  color: var(--error);
+}
+
+.feedback .explain {
+  font-size: 14.5px;
+  color: var(--text);
+  line-height: 1.5;
+}
+
+/* ---------- results ---------- */
+.score-block {
+  text-align: center;
+  padding: 10px 0 6px;
+}
+
+.score-num {
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 700;
+  font-size: 52px;
+  color: var(--accent-deep);
+  line-height: 1;
+}
+
+.score-sub {
+  color: var(--text-muted);
+  margin-top: 8px;
+  font-size: 15.5px;
+}
+
+.score-msg {
+  margin-top: 14px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.review-heading {
+  margin-top: 34px;
+  margin-bottom: 12px;
+  font-size: 15px;
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.review-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.review-item {
+  background: var(--surface);
+  border: 1.5px solid #eceff6;
+  border-left: 4px solid var(--error);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+}
+
+.review-item .rq {
+  font-size: 14.5px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.review-item .ra {
+  font-size: 13.5px;
+  color: var(--text-muted);
+  margin-bottom: 3px;
+}
+
+.review-item .ra b {
+  color: var(--text);
+  font-weight: 700;
+}
+
+.review-item .ra.right b {
+  color: var(--success);
+}
+
+.review-item .ra.wrong b {
+  color: var(--error);
+}
+
+.all-correct {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 14.5px;
+  margin-top: 30px;
+}
+
+</style>
+</head>
+<body>
+<div id="app" class="wrap"></div>
+<script>
+(function () {
+  "use strict";
+
+  var QUIZ_DATA = {"module1": [{"id": "m1-1.1.7-1", "section": "1.1.7", "sectionTitle": "Check Your Understanding - OSPF Features and Characteristics", "question": "Which of the following OSPF components is associated with the neighbor table?", "choices": ["Dijkstra's algorithm", "Link-State database", "Routing protocol messages", "Adjacency database", "Forwarding database"], "correct": ["Adjacency database"], "multi": false, "explanation": "The neighbor table is built from the adjacency database, which tracks the routers with which OSPF has formed adjacencies."}, {"id": "m1-1.1.7-2", "section": "1.1.7", "sectionTitle": "Check Your Understanding - OSPF Features and Characteristics", "question": "Which of the following OSPF components is responsible for computing the cost of each route?", "choices": ["Dijkstra's algorithm", "Link-State database", "Routing protocol messages", "Adjacency database", "Forwarding database"], "correct": ["Dijkstra's algorithm"], "multi": false, "explanation": "Route cost calculations are performed by Dijkstra's Shortest Path First (SPF) algorithm."}, {"id": "m1-1.1.7-3", "section": "1.1.7", "sectionTitle": "Check Your Understanding - OSPF Features and Characteristics", "question": "Which of the following OSPF components is associated with the topology table?", "choices": ["Dijkstra's algorithm", "Link-State database", "Routing protocol messages", "Adjacency database", "Forwarding database"], "correct": ["Link-State database"], "multi": false, "explanation": "The topology table is built from the link-state database (LSDB), which holds information describing the network topology."}, {"id": "m1-1.1.7-4", "section": "1.1.7", "sectionTitle": "Check Your Understanding - OSPF Features and Characteristics", "question": "Which of the following OSPF components is associated with the routing table?", "choices": ["Dijkstra's algorithm", "Link-State database", "Routing protocol messages", "Adjacency database", "Forwarding database"], "correct": ["Forwarding database"], "multi": false, "explanation": "The routing table is generated from the forwarding database."}, {"id": "m1-1.1.7-5", "section": "1.1.7", "sectionTitle": "Check Your Understanding - OSPF Features and Characteristics", "question": "What is the correct order in the steps for Link-State operation?", "choices": ["1. Execute the SPF Algorithm, 2. Establish Neighbor Adjacencies, 3. Exchange Link-State Advertisements, 4. Choose the Best Route, 5. Build the Topology Table", "1. Establish Neighbor Adjacencies, 2. Choose the Best Route, 3. Build the Topology Table, 4. Execute the SPF Algorithm, 5. Exchange Link-State Advertisements", "1. Establish Neighbor Adjacencies, 2. Exchange Link-State Advertisements, 3. Execute the SPF Algorithm, 4. Choose the Best Route, 5. Build the Topology Table", "1. Establish Neighbor Adjacencies, 2. Exchange Link-State Advertisements, 3. Build the Topology Table, 4. Execute the SPF Algorithm, 5. Choose the Best Route"], "correct": ["1. Establish Neighbor Adjacencies, 2. Exchange Link-State Advertisements, 3. Build the Topology Table, 4. Execute the SPF Algorithm, 5. Choose the Best Route"], "multi": false, "explanation": "OSPF's link-state process runs in this sequence: routers first form neighbor adjacencies, then exchange link-state advertisements, then use that information to build a topology table, then run the SPF algorithm against that table, and finally select the best routes."}, {"id": "m1-1.2.5-1", "section": "1.2.5", "sectionTitle": "Check Your Understanding - OSPF Packets", "question": "Which of the following OSPF packets contains an abbreviated list of the LSDB of the sending router?", "choices": ["Type 1: Hello packet", "Type 2: DBD packet", "Type 3: LSR packet", "Type 4: LSU packet", "Type 5: LSAck packet"], "correct": ["Type 2: DBD packet"], "multi": false, "explanation": "The Database Description (DBD) packet carries a condensed summary of the sending router's link-state database."}, {"id": "m1-1.2.5-2", "section": "1.2.5", "sectionTitle": "Check Your Understanding - OSPF Packets", "question": "Which of the following OSPF packets is used by routers to announce new information?", "choices": ["Type 1: Hello packet", "Type 2: DBD packet", "Type 3: LSR packet", "Type 4: LSU packet", "Type 5: LSAck packet"], "correct": ["Type 4: LSU packet"], "multi": false, "explanation": "Link-State Update (LSU) packets are how routers advertise new link-state information."}, {"id": "m1-1.2.5-3", "section": "1.2.5", "sectionTitle": "Check Your Understanding - OSPF Packets", "question": "Which of the following OSPF packets is used by routers to request more information?", "choices": ["Type 1: Hello packet", "Type 2: DBD packet", "Type 3: LSR packet", "Type 4: LSU packet", "Type 5: LSAck packet"], "correct": ["Type 3: LSR packet"], "multi": false, "explanation": "Link-State Request (LSR) packets are sent when a router needs more detail than what was summarized in a DBD packet."}, {"id": "m1-1.2.5-4", "section": "1.2.5", "sectionTitle": "Check Your Understanding - OSPF Packets", "question": "Which of the following OSPF packets is responsible for establishing and maintaining adjacency with other OSPF routers?", "choices": ["Type 1: Hello packet", "Type 2: DBD packet", "Type 3: LSR packet", "Type 4: LSU packet", "Type 5: LSAck packet"], "correct": ["Type 1: Hello packet"], "multi": false, "explanation": "Hello packets discover neighbors and keep adjacencies alive between OSPF routers."}, {"id": "m1-1.2.5-5", "section": "1.2.5", "sectionTitle": "Check Your Understanding - OSPF Packets", "question": "Which of the following OSPF packets is used to confirm receipt of an LSA?", "choices": ["Type 1: Hello packet", "Type 2: DBD packet", "Type 3: LSR packet", "Type 4: LSU packet", "Type 5: LSAck packet"], "correct": ["Type 5: LSAck packet"], "multi": false, "explanation": "Link-State Acknowledgment (LSAck) packets confirm that an LSA was received."}, {"id": "m1-1.2.5-6", "section": "1.2.5", "sectionTitle": "Check Your Understanding - OSPF Packets", "question": "Which of the following is used with the Hello Packet to uniquely identify the originating router?", "choices": ["Hello Interval", "Router ID", "Designated Router ID", "Network Mask", "Dead Interval"], "correct": ["Router ID"], "multi": false, "explanation": "The Router ID field in the OSPFv2 Hello packet uniquely identifies the router that sent it."}, {"id": "m1-1.3.7-1", "section": "1.3.7", "sectionTitle": "Check Your Understanding - OSPF Operation", "question": "During this OSPF state on multiaccess networks, the routers elect a Designated Router (DR) and a Backup Designated Router (BDR).", "choices": ["Down State", "Init State", "Two-Way State", "ExStart State", "Exchange State", "Loading State", "Full State"], "correct": ["Two-Way State"], "multi": false, "explanation": "DR/BDR elections on multiaccess segments take place during the Two-Way state."}, {"id": "m1-1.3.7-2", "section": "1.3.7", "sectionTitle": "Check Your Understanding - OSPF Operation", "question": "During this OSPF state, routers send each other DBD packets.", "choices": ["Down State", "Init State", "Two-Way State", "ExStart State", "Exchange State", "Loading State", "Full State"], "correct": ["Exchange State"], "multi": false, "explanation": "Routers exchange Database Description packets during the Exchange state."}, {"id": "m1-1.3.7-3", "section": "1.3.7", "sectionTitle": "Check Your Understanding - OSPF Operation", "question": "An OSPF router enters this state when it has received a Hello packet from a neighbor, containing the sending Router ID.", "choices": ["Down State", "Init State", "Two-Way State", "ExStart State", "Exchange State", "Loading State", "Full State"], "correct": ["Init State"], "multi": false, "explanation": "A router moves into the Init state once it receives a Hello packet listing the sender's Router ID."}, {"id": "m1-1.3.7-4", "section": "1.3.7", "sectionTitle": "Check Your Understanding - OSPF Operation", "question": "During this OSPF state on point-to-point networks, the routers decide which router initiates the exchange of DBD packets.", "choices": ["Down State", "Init State", "Two-Way State", "ExStart State", "Exchange State", "Loading State", "Full State"], "correct": ["ExStart State"], "multi": false, "explanation": "On point-to-point links, routers negotiate which one starts the DBD exchange during the ExStart state."}, {"id": "m1-1.3.7-5", "section": "1.3.7", "sectionTitle": "Check Your Understanding - OSPF Operation", "question": "During this OSPF state, routers have converged link-state databases.", "choices": ["Down State", "Init State", "Two-Way State", "ExStart State", "Exchange State", "Loading State", "Full State"], "correct": ["Full State"], "multi": false, "explanation": "Routers reach full convergence, with matching link-state databases, in the Full state."}, {"id": "m1-1.3.7-6", "section": "1.3.7", "sectionTitle": "Check Your Understanding - OSPF Operation", "question": "During this OSPF state, no Hello packets are received.", "choices": ["Down State", "Init State", "Two-Way State", "ExStart State", "Exchange State", "Loading State", "Full State"], "correct": ["Down State"], "multi": false, "explanation": "The Down state is the starting point, before any Hello packets have been received from a neighbor."}, {"id": "m1-1.3.7-7", "section": "1.3.7", "sectionTitle": "Check Your Understanding - OSPF Operation", "question": "During this OSPF state, routes are processed using the SPF algorithm.", "choices": ["Down State", "Init State", "Two-Way State", "ExStart State", "Exchange State", "Full State", "Loading State"], "correct": ["Full State"], "multi": false, "explanation": "SPF calculations used to build the routing table occur once routers reach the Full state."}, {"id": "m1-1.4.2-1", "section": "1.4.2", "sectionTitle": "Module Quiz - Single-Area OSPFv2 Concepts", "question": "What is a function of OSPF hello packets?", "choices": ["to discover neighbors and build adjacencies between them", "to ensure database synchronization between routers", "to send specifically requested link-state records", "to request specific link-state records from neighbor routers"], "correct": ["to discover neighbors and build adjacencies between them"], "multi": false, "explanation": "Hello packets serve three main purposes: discovering and forming adjacencies with neighbors, advertising parameters neighbors must agree on, and electing the DR and BDR."}, {"id": "m1-1.4.2-2", "section": "1.4.2", "sectionTitle": "Module Quiz - Single-Area OSPFv2 Concepts", "question": "Which OSPF packet contains the different types of link-state advertisements?", "choices": ["LSU", "LSR", "hello", "DBD", "LSAck"], "correct": ["LSU"], "multi": false, "explanation": "Link-State Update packets carry the various LSA types and are used both to answer LSR requests and to announce new link-state information."}, {"id": "m1-1.4.2-3", "section": "1.4.2", "sectionTitle": "Module Quiz - Single-Area OSPFv2 Concepts", "question": "Which statements describe features of the OSPF topology table? (Choose three.)", "choices": ["After convergence, the table only contains the lowest cost route entries for all known networks.", "The topology table contains feasible successor routes.", "The table can be viewed via the show ip ospf database command.", "Its contents are the result of running the SPF algorithm.", "It is a link-state database that represents the network topology.", "When converged, all routers in an area have identical topology tables."], "correct": ["The table can be viewed via the show ip ospf database command.", "It is a link-state database that represents the network topology.", "When converged, all routers in an area have identical topology tables."], "multi": true, "explanation": "The OSPF topology table is really the link-state database (LSDB): it models the network topology, is viewable with show ip ospf database, and is identical across all routers in an area once converged. 'Feasible successor routes' is an EIGRP concept, not an OSPF one, and keeping only the lowest-cost entries is the job of the routing table produced after the SPF algorithm processes the LSDB, not a property of the topology table itself."}, {"id": "m1-1.4.2-4", "section": "1.4.2", "sectionTitle": "Module Quiz - Single-Area OSPFv2 Concepts", "question": "What does an OSPF area contain?", "choices": ["routers that share the same process ID", "routers that share the same router ID", "routers that have the same link-state information in their LSDBs", "routers whose SPF trees are identical"], "correct": ["routers that have the same link-state information in their LSDBs"], "multi": false, "explanation": "Routers in the same OSPF area share identical link-state information, even though each still builds its own SPF tree. Process IDs are locally significant and router IDs are unique per router, so neither one defines an area."}, {"id": "m1-1.4.2-5", "section": "1.4.2", "sectionTitle": "Module Quiz - Single-Area OSPFv2 Concepts", "question": "A router is participating in an OSPFv2 domain. What will always happen if the dead interval expires before the router receives a hello packet from an adjacent DROTHER OSPF router?", "choices": ["A new dead interval timer of 4 times the hello interval will start.", "SPF will run and determine which neighbor router is “down”.", "OSPF will run a new DR/BDR election.", "OSPF will remove that neighbor from the router link-state database."], "correct": ["OSPF will remove that neighbor from the router link-state database."], "multi": false, "explanation": "The default dead interval is four times the hello interval, and once it expires without a Hello being heard, the router always removes that neighbor from its link-state database. SPF doesn't track neighbor state -- it only computes routes -- and a new DR/BDR election isn't guaranteed, since that depends on the network type and whether the lost router was the DR or BDR."}, {"id": "m1-1.4.2-6", "section": "1.4.2", "sectionTitle": "Module Quiz - Single-Area OSPFv2 Concepts", "question": "What is the order of packet types used by an OSPF router to establish convergence?", "choices": ["LSAck, Hello, DBD, LSU, LSR", "LSU, LSAck, Hello, DBD, LSR", "Hello, DBD, LSR, LSU, LSAck", "Hello, LSAck, LSU, LSR, DBD"], "correct": ["Hello, DBD, LSR, LSU, LSAck"], "multi": false, "explanation": "OSPF routers converge by progressing through Hello (neighbor discovery), DBD (database summary exchange), LSR (requesting missing details), LSU (sending updates), and finally LSAck (acknowledging receipt)."}, {"id": "m1-1.4.2-7", "section": "1.4.2", "sectionTitle": "Module Quiz - Single-Area OSPFv2 Concepts", "question": "What is a feature of the OSPF routing protocol?", "choices": ["OSPF authentication is configured in the same way on IPv4 and IPv6 networks.", "Routers can be grouped into autonomous systems to support a hierarchical system.", "It scales well in both small and large networks.", "The SPF algorithm chooses the best path based on 30-second updates."], "correct": ["It scales well in both small and large networks."], "multi": false, "explanation": "OSPF is valued for scaling well across network sizes. Its authentication approach differs between IPv4 (MD5) and IPv6 (which relies on IPsec instead of a built-in method), routing updates are triggered by changes rather than sent every 30 seconds, and OSPF's hierarchy is built around areas rather than autonomous systems."}, {"id": "m1-1.4.2-8", "section": "1.4.2", "sectionTitle": "Module Quiz - Single-Area OSPFv2 Concepts", "question": "What is used to create the OSPF neighbor table?", "choices": ["link-state database", "forwarding database", "routing table", "adjacency database"], "correct": ["adjacency database"], "multi": false, "explanation": "The adjacency database builds the neighbor table; the link-state database builds the topology table, and the forwarding database builds the routing table."}, {"id": "m1-1.4.2-9", "section": "1.4.2", "sectionTitle": "Module Quiz - Single-Area OSPFv2 Concepts", "question": "What is identical on all OSPF routers within a single area?", "choices": ["neighbor table", "routing table", "link-state database", "static routes"], "correct": ["link-state database"], "multi": false, "explanation": "Once LSA flooding finishes, every router in an area holds the same link-state information, so the link-state database is identical area-wide."}, {"id": "m1-1.4.2-10", "section": "1.4.2", "sectionTitle": "Module Quiz - Single-Area OSPFv2 Concepts", "question": "What function is performed by the OSPF designated router?", "choices": ["summarizing routes between areas", "maintaining the link-state database", "redistribution of external routes into OSPF", "dissemination of LSAs"], "correct": ["dissemination of LSAs"], "multi": false, "explanation": "On multiaccess networks, the designated router's job is to distribute LSAs to the other routers, cutting down on redundant flooding."}, {"id": "m1-1.4.2-11", "section": "1.4.2", "sectionTitle": "Module Quiz - Single-Area OSPFv2 Concepts", "question": "What are two reasons for creating an OSPF network with multiple areas? (Choose two.)", "choices": ["to simplify configuration", "to ensure that an area is used to connect the network to the Internet", "to reduce use of memory and processor resources", "to reduce SPF calculations", "to provide areas in the network for routers that are not running OSPF"], "correct": ["to reduce use of memory and processor resources", "to reduce SPF calculations"], "multi": true, "explanation": "Splitting a network into multiple OSPF areas keeps link-state databases smaller and reduces SPF recalculations, easing memory and CPU load. It doesn't simplify configuration (it actually adds steps), has no bearing on Internet connectivity, and areas can only be assigned to routers that are actually running OSPF."}, {"id": "m1-1.4.2-12", "section": "1.4.2", "sectionTitle": "Module Quiz - Single-Area OSPFv2 Concepts", "question": "At which OSPF state are neighbor routers converged and able to exchange routing updates?", "choices": ["Exchange", "Two-Way", "ExStart", "Full"], "correct": ["Full"], "multi": false, "explanation": "Neighbors that reach the Full state are fully converged and can exchange routing information."}, {"id": "m1-1.4.2-13", "section": "1.4.2", "sectionTitle": "Module Quiz - Single-Area OSPFv2 Concepts", "question": "The OSPF hello timer has been set to 15 seconds on a router in a point-to-point network. By default, what is the dead interval on this router?", "choices": ["30 seconds", "60 seconds", "45 seconds", "15 seconds"], "correct": ["60 seconds"], "multi": false, "explanation": "The default dead interval is four times the hello interval, so a 15-second hello timer gives a 60-second dead interval."}, {"id": "m1-1.4.2-14", "section": "1.4.2", "sectionTitle": "Module Quiz - Single-Area OSPFv2 Concepts", "question": "What happens immediately after two OSPF routers have exchanged hello packets and have formed a neighbor adjacency?", "choices": ["They exchange abbreviated lists of their LSDBs.", "They negotiate the election process if they are on a multiaccess network.", "They exchange DBD packets in order to advertise parameters such as hello and dead intervals.", "They request more information about their databases."], "correct": ["They negotiate the election process if they are on a multiaccess network."], "multi": false, "explanation": "Right after Hello packets establish an adjacency, routers on a multiaccess network negotiate the DR/BDR election process. DBD packets (carrying abbreviated LSDB summaries) come after that, and LSR requests for further detail follow afterward."}, {"id": "m1-1.4.2-15", "section": "1.4.2", "sectionTitle": "Module Quiz - Single-Area OSPFv2 Concepts", "question": "Which statement is correct about multiarea OSPF?", "choices": ["OSPF can consolidate a fragmented OSPF area into one large area.", "Arranging routers into areas partitions a large autonomous system in order to lighten the load on routers.", "All routers are in one area called the backbone area (area 0).", "OSPF multiarea increases the frequency of SPF calculation."], "correct": ["Arranging routers into areas partitions a large autonomous system in order to lighten the load on routers."], "multi": false, "explanation": "Multiarea OSPF breaks a large autonomous system into smaller areas specifically to reduce the processing burden on routers, rather than consolidating areas, keeping everything in area 0, or increasing SPF calculations."}, {"id": "m1-1.4.2-16", "section": "1.4.2", "sectionTitle": "Module Quiz - Single-Area OSPFv2 Concepts", "question": "Which OSPF data structure is identical in all routers in an OSPF area after convergence?", "choices": ["Adjacency database", "Link-state database", "Routing table", "SPF tree"], "correct": ["Link-state database"], "multi": false, "explanation": "Each router calculates its own unique SPF tree, adjacency database, and routing table, but the link-state database for a given area is identical across every router in that area."}, {"id": "m1-1.4.2-17", "section": "1.4.2", "sectionTitle": "Module Quiz - Single-Area OSPFv2 Concepts", "question": "What are the purposes of an OSPF router ID? (Choose two.)", "choices": ["To enable the SPF algorithm to determine the lowest-cost path to remote networks", "To facilitate router participation in the election of the designated router", "To facilitate the establishment of network convergence", "To facilitate the transition of the OSPF neighbor state to Full", "To uniquely identify the router within the OSPF domain"], "correct": ["To facilitate router participation in the election of the designated router", "To uniquely identify the router within the OSPF domain"], "multi": true, "explanation": "The router ID's job is to give each router in the OSPF domain a unique identity and to play a role in DR elections. It doesn't factor into SPF cost calculations, doesn't drive the transition to the Full state, and has no direct effect on overall convergence."}, {"id": "m1-1.4.2-18", "section": "1.4.2", "sectionTitle": "Module Quiz - Single-Area OSPFv2 Concepts", "question": "Which statement describes a multiarea OSPF network?", "choices": ["It consists of multiple network areas that are daisy-chained together.", "It has a core backbone area with other areas connected to the backbone area.", "It has multiple routers that run multiple routing protocols simultaneously, and each protocol consists of an area.", "It requires a three-layer hierarchical network design approach."], "correct": ["It has a core backbone area with other areas connected to the backbone area."], "multi": false, "explanation": "A multiarea OSPF design uses a two-level hierarchy: a backbone area at the core, with every other area connecting directly to it."}, {"id": "m1-1.4.2-19", "section": "1.4.2", "sectionTitle": "Module Quiz - Single-Area OSPFv2 Concepts", "question": "What are the advantages of using multiarea OSPF? (Choose two.)", "choices": ["A backbone area is not required.", "It allows OSPFv2 and OSPFv3 to run together.", "It enables multiple routing protocols to run in a large network.", "It improves routing efficiency by reducing the routing table and linkstate update overhead.", "It improves routing performance by dividing the neighbor table into separate smaller ones.", "Topology changes in one area do not cause SPF recalculations in other areas."], "correct": ["It improves routing efficiency by reducing the routing table and linkstate update overhead.", "Topology changes in one area do not cause SPF recalculations in other areas."], "multi": true, "explanation": "Multiarea OSPF improves efficiency because routes can be summarized between areas, shrinking routing tables and LSA traffic, and because a topology change in one area doesn't trigger SPF recalculation in the others. It doesn't remove the need for a backbone area, and it isn't primarily about mixing routing protocols or running OSPFv2 and OSPFv3 together."}, {"id": "m1-1.4.2-20", "section": "1.4.2", "sectionTitle": "Module Quiz - Single-Area OSPFv2 Concepts", "question": "Which command can be used to verify the contents of the LSDB in an OSPF area?", "choices": ["show ip ospf database", "show ip ospf interface", "show ip ospf neighbor", "show ip route ospf"], "correct": ["show ip ospf database"], "multi": false, "explanation": "show ip ospf database displays the LSDB contents; the other commands show interface configuration, neighbor information, or routing-table entries instead."}, {"id": "m1-1.4.2-21", "section": "1.4.2", "sectionTitle": "Module Quiz - Single-Area OSPFv2 Concepts", "question": "Which of the following facilitates hierarchical routing in OSPF?", "choices": ["1. Auto-summarization", "2. Frequent SPF calculations", "3. The election of designated routers", "4. The use of multiple areas"], "correct": ["4. The use of multiple areas"], "multi": false, "explanation": "Dividing an OSPF network into multiple areas is what enables hierarchical routing, since only routers within the same area share full link-state details, keeping routing tables, LSDBs, and SPF workload smaller."}, {"id": "m1-1.4.2-22", "section": "1.4.2", "sectionTitle": "Module Quiz - Single-Area OSPFv2 Concepts", "question": "Which step does an OSPF-enabled router take immediately after the OSPF router builds the topology table?", "choices": ["Chooses the best path", "Establishes an adjacency with another router", "Exchanges link-state advertisements", "Executes the SPF algorithm"], "correct": ["Executes the SPF algorithm"], "multi": false, "explanation": "The OSPF process flows: form adjacencies, exchange LSAs, build the topology table, run the SPF algorithm, then choose the best routes -- so running SPF is the step right after the topology table is built."}, {"id": "m1-1.4.2-23", "section": "1.4.2", "sectionTitle": "Module Quiz - Single-Area OSPFv2 Concepts", "question": "Which type of OSPFv2 packet contains an abbreviated list of the LSDB of a sending router and is used by receiving routers to check against the local LSDB?", "choices": ["Database Description", "Link-State Acknowledgment", "Link-State Request", "Link-State Update"], "correct": ["Database Description"], "multi": false, "explanation": "The Database Description (Type 2) packet gives receiving routers an abbreviated summary of the sender's LSDB so they can check it against their own, since the LSDB must match across all routers in an area to build an accurate SPF tree."}, {"id": "m1-1.4.2-24", "section": "1.4.2", "sectionTitle": "Module Quiz - Single-Area OSPFv2 Concepts", "question": "Which OSPF states are performed prior to two routers forming a neighbor adjacency? (Choose three.)", "choices": ["Down", "Exchange", "ExStart", "Init", "Loading", "Two-Way"], "correct": ["Down", "Init", "Two-Way"], "multi": true, "explanation": "Of OSPF's seven states, Down, Init, and Two-Way occur during the process of forming a neighbor adjacency, before the exchange of routing information begins."}, {"id": "m1-1.4.2-25", "section": "1.4.2", "sectionTitle": "Module Quiz - Single-Area OSPFv2 Concepts", "question": "In an OSPF network, when are DR and BDR elections required?", "choices": ["When all the routers in an OSPF area cannot form adjacencies", "When the routers are interconnected over a common Ethernet network", "When the two adjacent neighbors are in two different networks", "When the two adjacent neighbors are interconnected over a point-topoint link"], "correct": ["When the routers are interconnected over a common Ethernet network"], "multi": false, "explanation": "DR and BDR elections happen specifically on multiaccess segments (such as Ethernet), not on point-to-point links or across separate networks."}, {"id": "m1-1.4.2-26", "section": "1.4.2", "sectionTitle": "Module Quiz - Single-Area OSPFv2 Concepts", "question": "When an OSPF network is converged and no network topology change has been detected by a router, how often are LSU packets sent to neighboring routers?", "choices": ["Every 10 seconds", "Every 40 seconds", "Every 15 minutes", "Every 30 minutes"], "correct": ["Every 30 minutes"], "multi": false, "explanation": "Once OSPF has converged and nothing has changed, routers still resend LSUs every 30 minutes as a periodic refresh, in addition to any incremental updates triggered by topology changes."}], "module2": [{"id": "m2-2.1.9-1", "section": "2.1.9", "sectionTitle": "Check Your Understanding - OSPF Router ID", "question": "True or False? In the router ospf process-id command, the process ID value, which can be any number between 1 and 65,535, is locally significant. It must be the same on all routers in the OSPF area.", "choices": ["True", "False"], "correct": ["False"], "multi": false, "explanation": "The process ID is only locally significant to the router it's configured on. It doesn't need to match across routers in the area, though many admins keep it consistent just to avoid confusion."}, {"id": "m2-2.1.9-2", "section": "2.1.9", "sectionTitle": "Check Your Understanding - OSPF Router ID", "question": "Which of the following applies to the router ID? (Choose two)", "choices": ["The router ID cannot be defined by an administrator.", "The router ID is not used to determine the BDR.", "The router ID is used to determine the DR.", "The router ID uniquely identifies the router.", "The router ID is not required."], "correct": ["The router ID is used to determine the DR.", "The router ID uniquely identifies the router."], "multi": true, "explanation": "The router ID gives an OSPF router a unique identity and factors into DR/BDR elections on multiaccess networks -- the highest router ID becomes DR, and the second-highest becomes BDR. An administrator can manually set it, and every OSPF router needs one (whether configured or auto-selected)."}, {"id": "m2-2.1.9-3", "section": "2.1.9", "sectionTitle": "Check Your Understanding - OSPF Router ID", "question": "Which of the following is the order of precedence for choosing the router ID?", "choices": ["1. Router ID that is explicitly configured, 2. Lowest IPv4 loopback address, 3. Lowest active configured IPv4 address", "1. Router ID that is explicitly configured, 2. Lowest active configured IPv4 address, 3. Lowest IPv4 loopback address", "1. Router ID that is explicitly configured, 2. Highest IPv4 loopback address, 3. Highest active configured IPv4 address", "1. Highest IPv4 loopback address, 2. Router ID that is explicitly configured, 3. Highest active configured IPv4 address", "1. Highest IPv4 loopback address, 2. Highest active configured IPv4 address, 3. Router ID that is explicitly configured"], "correct": ["1. Router ID that is explicitly configured, 2. Highest IPv4 loopback address, 3. Highest active configured IPv4 address"], "multi": false, "explanation": "A router first uses a router ID that's been manually configured with the router-id command. If none is set, it falls back to the highest IPv4 address among its configured loopback interfaces, and if there are no loopbacks, it uses the highest active IPv4 address on any physical interface."}, {"id": "m2-2.7.5-1", "section": "2.7.5", "sectionTitle": "Module Quiz - Single-Area OSPFv2 Configuration", "question": "Which criterion is preferred by the router to choose a router ID?", "choices": ["the IP address of the highest configured loopback interface on the router", "the IP address of the highest active OSPF-enabled interface", "the router-id rid command", "the IP address of the highest active interface on the router"], "correct": ["the router-id rid command"], "multi": false, "explanation": "Cisco routers prefer, in order: an explicitly configured router-id, then the highest IP address on a configured loopback interface, then the highest IP address on any active interface (it doesn't have to be OSPF-enabled)."}, {"id": "m2-2.7.5-2", "section": "2.7.5", "sectionTitle": "Module Quiz - Single-Area OSPFv2 Configuration", "question": "Which wildcard mask would be used to advertise the 192.168.5.96/27 network as part of an OSPF configuration?", "choices": ["0.0.0.32", "0.0.0.31", "255.255.255.224", "255.255.255.223"], "correct": ["0.0.0.31"], "multi": false, "explanation": "A /27 subnet mask is 255.255.255.224. Subtracting that from 255.255.255.255 gives a wildcard mask of 0.0.0.31."}, {"id": "m2-2.7.5-3", "section": "2.7.5", "sectionTitle": "Module Quiz - Single-Area OSPFv2 Configuration", "question": "The following three networks are directly connected to an OSPF router: 192.168.0.0/24, 192.168.1.0/24, and 192.168.2.0/24. Which OSPF network command would advertise only the 192.168.1.0 network to neighbors?", "choices": ["router(config-router)# network 192.168.1.0 0.0.0.0 area 0", "router(config-router)# network 192.168.1.0 0.0.0.255 area 0", "router(config-router)# network 192.168.1.0 255.255.255.255 area 0", "router(config-router)# network 192.168.0.0 0.0.15.255 area 0"], "correct": ["router(config-router)# network 192.168.1.0 0.0.0.255 area 0"], "multi": false, "explanation": "To match only the 192.168.1.0/24 network, the wildcard mask needs binary zeros across the first 24 bits (matched exactly) and ones across the remaining 8 bits, which is 0.0.0.255."}, {"id": "m2-2.7.5-4", "section": "2.7.5", "sectionTitle": "Module Quiz - Single-Area OSPFv2 Configuration", "question": "Which three parameters should match in order for a pair of routers to form an adjacency when running OSPFv2? (Choose three.)", "choices": ["OSPFv2 process number", "OSPFv2 type of network", "router ID", "interface priority", "hello timer", "subnet mask"], "correct": ["OSPFv2 type of network", "hello timer", "subnet mask"], "multi": true, "explanation": "For two OSPFv2 routers to form an adjacency, their subnet mask, network type, and hello/dead timers need to match (along with any authentication settings). The process ID is only locally significant, router IDs must be unique rather than matching, and interface priority doesn't need to match either."}, {"id": "m2-2.7.5-5", "section": "2.7.5", "sectionTitle": "Module Quiz - Single-Area OSPFv2 Configuration", "question": "What are two features of the OSPF routing protocol? (Choose two.)", "choices": ["used primarily as an EGP", "uses Dijkstra's algorithm to build the SPF tree", "has an administrative distance of 100", "automatically summarizes networks at the classful boundaries", "calculates its metric using bandwidth"], "correct": ["uses Dijkstra's algorithm to build the SPF tree", "calculates its metric using bandwidth"], "multi": true, "explanation": "OSPF is an interior gateway protocol (not an EGP), has a default administrative distance of 110 (not 100), and is classless without automatic summarization. It does use Dijkstra's SPF algorithm and bases its cost metric on bandwidth."}, {"id": "m2-2.7.5-6", "section": "2.7.5", "sectionTitle": "Module Quiz - Single-Area OSPFv2 Configuration", "question": "A router with two LAN interfaces, two WAN interfaces, and one configured loopback interface is operating with OSPF as its routing protocol. What does the router OSPF process use to assign the router ID?", "choices": ["the loopback interface IP address", "the highest IP address on the LAN interfaces", "the OSPF area ID that is configured on the interface with the highest IP address", "the IP address of the interface that is configured with priority 0", "the highest IP address that is configured on the WAN interfaces"], "correct": ["the loopback interface IP address"], "multi": false, "explanation": "Without a manually configured router-id, OSPF prefers the IP address of a configured loopback interface over any physical LAN or WAN interface address, regardless of which physical interface has the numerically higher address."}, {"id": "m2-2.7.5-7", "section": "2.7.5", "sectionTitle": "Module Quiz - Single-Area OSPFv2 Configuration", "question": "Which verification command would identify the specific interfaces on a router that were configured with the passive-interface command?", "choices": ["show ip protocols", "show ip eigrp neighbors", "show ip interface brief", "show ip route eigrp"], "correct": ["show ip protocols"], "multi": false, "explanation": "show ip protocols lists which interfaces on the router have been set as passive."}, {"id": "m2-2.7.5-8", "section": "2.7.5", "sectionTitle": "Module Quiz - Single-Area OSPFv2 Configuration", "question": "Which command, if applied on an OSPF router, would give a Gigabit Ethernet interface a lower cost than a Fast Ethernet interface?", "choices": ["(config-if)# bandwidth 100", "(config-if)# ip ospf priority 1", "(config-router)# auto-cost reference-bandwidth 1000", "(config-if)# ip ospf cost 100"], "correct": ["(config-router)# auto-cost reference-bandwidth 1000"], "multi": false, "explanation": "OSPF cost equals a reference bandwidth divided by the interface bandwidth, rounded to an integer, so by default anything 100 Mb/s or faster all costs 1 and can't be distinguished. Raising the reference bandwidth to 1000 (meaning 1000 Mb/s, i.e. Gigabit speed) lets Gigabit interfaces get a lower cost than Fast Ethernet ones."}, {"id": "m2-2.7.5-9", "section": "2.7.5", "sectionTitle": "Module Quiz - Single-Area OSPFv2 Configuration", "question": "A network administrator has just changed the router ID on a router that is working in an OSPFv2 environment. What should the administrator do to reset the adjacencies and use the new router ID?", "choices": ["Configure the network statements.", "Change the OSPFv2 process ID.", "Issue the clear ip ospf process privileged mode command.", "Change the interface priority."], "correct": ["Issue the clear ip ospf process privileged mode command."], "multi": false, "explanation": "Changing the router ID doesn't take effect on a running router until the OSPF process is restarted, which is done with clear ip ospf process."}, {"id": "m2-2.7.5-10", "section": "2.7.5", "sectionTitle": "Module Quiz - Single-Area OSPFv2 Configuration", "question": "Which command can be used to view the OSPF hello and dead time intervals?", "choices": ["show ip ospf route", "show ip protocols", "show ip ospf interface", "show ip ospf neighbor"], "correct": ["show ip ospf interface"], "multi": false, "explanation": "Hello and dead timers are configured per interface, so show ip ospf interface (optionally with the interface name) is what displays them."}, {"id": "m2-2.7.5-11", "section": "2.7.5", "sectionTitle": "Module Quiz - Single-Area OSPFv2 Configuration", "question": "What does the SPF algorithm consider to be the best path to a network?", "choices": ["The path that includes the fastest cumulative bandwidth links.", "The path with the least number of hops.", "The path with the smallest delays.", "The path that includes the fastest single bandwidth link."], "correct": ["The path that includes the fastest cumulative bandwidth links."], "multi": false, "explanation": "OSPF's cost is accumulated across every link in the path based on bandwidth, so the best path is the one with the fastest overall (cumulative) bandwidth end-to-end -- not simply the fewest hops or the speed of any single link."}, {"id": "m2-2.7.5-12", "section": "2.7.5", "sectionTitle": "Module Quiz - Single-Area OSPFv2 Configuration", "question": "What is one use of the router ID in OSPF routing?", "choices": ["The router ID indicates the highest IPv4 address of all routers that are participating in OSPF routing.", "The router ID identifies the OSPF area.", "The router ID can be used to break a tie in the election process.", "The router ID indicates the router priority value."], "correct": ["The router ID can be used to break a tie in the election process."], "multi": false, "explanation": "If router priority values are tied (or not configured) during a DR/BDR election, the router with the highest router ID wins the tiebreaker. The router ID doesn't identify an area or indicate a priority value on its own."}, {"id": "m2-2.7.5-13", "section": "2.7.5", "sectionTitle": "Module Quiz - Single-Area OSPFv2 Configuration", "question": "What is the first criterion used by OSPF routers to elect a DR?", "choices": ["highest priority", "highest router ID", "highest MAC address", "highest IP address"], "correct": ["highest priority"], "multi": false, "explanation": "DR election looks at OSPF interface priority first; only if priorities are tied does the router ID become the tiebreaker."}, {"id": "m2-2.7.5-14", "section": "2.7.5", "sectionTitle": "Module Quiz - Single-Area OSPFv2 Configuration", "question": "Which command could be used on a router to ensure that an OSPF adjacency is formed with another router?", "choices": ["show ip protocols", "show ip ospf interface", "show ip route", "show ip ospf neighbor", "show ip interface brief"], "correct": ["show ip ospf neighbor"], "multi": false, "explanation": "show ip ospf neighbor is the go-to command for confirming that adjacencies have actually formed, particularly when an expected route is missing from the routing table."}, {"id": "m2-2.7.5-15", "section": "2.7.5", "sectionTitle": "Module Quiz - Single-Area OSPFv2 Configuration", "question": "A router in an OSPF enterprise network has a default static route that has been configured via the interface that connects to the ISP. Which command would the network administrator apply on this router so that other routers in the OSPF network will use this default route?", "choices": ["redistribute connected", "redistribute static", "redistribute static subnets", "default-information originate"], "correct": ["default-information originate"], "multi": false, "explanation": "default-information originate tells the router to advertise itself as the source of a default route and propagate that static default route to the rest of the OSPF area."}, {"id": "m2-2.7.5-16", "section": "2.7.5", "sectionTitle": "Module Quiz - Single-Area OSPFv2 Configuration", "question": "A router is participating in an OSPFv2 domain. What will always happen if the Dead interval expires before the router receives a Hello packet from an adjacent OSPF router?", "choices": ["A new Dead interval timer of four times the Hello interval will start.", "OSPF will remove that neighbor from the router's link-state database.", "OSPF will run a new DR/BDR election.", "SPF will run and determine which neighbor router is down."], "correct": ["OSPF will remove that neighbor from the router's link-state database."], "multi": false, "explanation": "Once the dead interval (four times the hello interval by default) expires without a Hello, the router always drops that neighbor from its link-state database. A new DR/BDR election isn't guaranteed -- it depends on the network type and whether the lost router held the DR or BDR role -- and SPF only computes routes, not neighbor status."}, {"id": "m2-2.7.5-17", "section": "2.7.5", "sectionTitle": "Module Quiz - Single-Area OSPFv2 Configuration", "question": "Which command would be used to determine if an OSPF routing protocol-initiated relationship had been made with an adjacent router?", "choices": ["ping", "show ip interface brief", "show ip ospf neighbor", "show ip protocols"], "correct": ["show ip ospf neighbor"], "multi": false, "explanation": "Only show ip ospf neighbor confirms whether two routers have actually exchanged OSPF messages and formed a neighbor relationship; ping and show ip interface brief only confirm lower-layer connectivity, and show ip protocols shows general routing parameters rather than adjacency status."}, {"id": "m2-2.7.5-18", "section": "2.7.5", "sectionTitle": "Module Quiz - Single-Area OSPFv2 Configuration", "question": "Which command is used to verify the OSPFv2 router ID, the interfaces explicitly configured to advertise OSPF routes, the passive interfaces, the neighbors the router is receiving updates from, and the default administrative distance, which is 110 for OSPF?", "choices": ["show ip interface brief", "show ip ospf interface", "show ip protocols", "show ip route ospf"], "correct": ["show ip protocols"], "multi": false, "explanation": "show ip protocols is the command that summarizes the router ID, advertised networks, passive interfaces, neighbor sources, and administrative distance for the routing process."}, {"id": "m2-2.7.5-19", "section": "2.7.5", "sectionTitle": "Module Quiz - Single-Area OSPFv2 Configuration", "question": "Two OSPFv2 routers are interconnected using a point-to-point WAN link. Which command could be used to verify the configured Hello and Dead timer intervals?", "choices": ["show ip ospf neighbor", "show ip ospf interface fastethernet 0/1", "show ip ospf interface serial 0/0/0", "show ipv6 ospf interface serial 0/0/0"], "correct": ["show ip ospf interface serial 0/0/0"], "multi": false, "explanation": "Since the link in question is a point-to-point serial WAN link running OSPFv2, show ip ospf interface serial 0/0/0 is the command that shows the configured Hello and Dead timers on that specific interface. The FastEthernet version applies to a multiaccess link, the IPv6 version applies to OSPFv3, and show ip ospf neighbor only shows elapsed dead time, not the configured interval."}, {"id": "m2-2.7.5-20", "section": "2.7.5", "sectionTitle": "Module Quiz - Single-Area OSPFv2 Configuration", "question": "You are troubleshooting convergence and adjacency issues in an OSPFv2 network and have noticed that network route entries are missing from the routing table. Which commands provide additional information about the state of router adjacencies, timer intervals, and the area ID? (Choose two.)", "choices": ["show ip ospf interface", "show ip ospf neighbor", "show ip protocols", "show ip route ospf", "show running-configuration"], "correct": ["show ip ospf interface", "show ip ospf neighbor"], "multi": true, "explanation": "show ip ospf interface and show ip ospf neighbor are the commands that expose adjacency state, timer values, and area ID details. show running-configuration and show ip protocols only surface general configuration, not adjacency or timer state."}, {"id": "m2-2.7.5-21", "section": "2.7.5", "sectionTitle": "Module Quiz - Single-Area OSPFv2 Configuration", "question": "A network engineer has manually configured the Hello interval to 15 seconds on an interface of a router that is running OSPFv2. By default, how will the Dead interval on the interface be affected?", "choices": ["The Dead interval will not change from the default value.", "The Dead interval will now be 15 seconds.", "The Dead interval will now be 30 seconds.", "The Dead interval will now be 60 seconds."], "correct": ["The Dead interval will now be 60 seconds."], "multi": false, "explanation": "Cisco IOS automatically recalculates the Dead interval as four times whatever the Hello interval is set to, so 15 seconds becomes 60 seconds."}, {"id": "m2-2.7.5-22", "section": "2.7.5", "sectionTitle": "Module Quiz - Single-Area OSPFv2 Configuration", "question": "To establish a neighbor adjacency, two OSPF routers exchange Hello packets. Which values in the Hello packets must match on the two routers? (Choose two.)", "choices": ["1. Dead interval", "2. Hello interval", "3. List of neighbors", "4. Router ID", "5. Router priority"], "correct": ["1. Dead interval", "2. Hello interval"], "multi": true, "explanation": "The Hello and Dead interval timers carried in the Hello packet must match between neighboring routers for an adjacency to form; the list of neighbors, router ID, and router priority don't need to match."}, {"id": "m2-2.7.5-23", "section": "2.7.5", "sectionTitle": "Module Quiz - Single-Area OSPFv2 Configuration", "question": "What is the default router priority value for all Cisco OSPF routers?", "choices": ["0", "1", "10", "255"], "correct": ["1"], "multi": false, "explanation": "OSPF router priority defaults to 1 on Cisco routers, though it can be manually set anywhere from 0 to 255."}, {"id": "m2-2.7.5-24", "section": "2.7.5", "sectionTitle": "Module Quiz - Single-Area OSPFv2 Configuration", "question": "What indicates to a link-state router that a neighbor is unreachable?", "choices": ["The router no longer receives Hello packets.", "The router no longer receives routing updates.", "The router receives an LSP with previously learned information.", "The router receives an update with a hop count of 16."], "correct": ["The router no longer receives Hello packets."], "multi": false, "explanation": "OSPF routers use Hello packets to monitor neighbor state; once Hellos stop arriving from a neighbor (and the dead interval elapses), that neighbor is considered unreachable and the adjacency breaks."}, {"id": "m2-2.7.5-25", "section": "2.7.5", "sectionTitle": "Module Quiz - Single-Area OSPFv2 Configuration", "question": "Which of the following will OSPF use when it chooses its router ID?", "choices": ["A loopback interface that is configured with the highest IP address on the router", "The highest active interface IP address that is configured on the router", "The lowest active interface IP address that is configured on the router", "The highest active interface that participates in the routing process because of a specifically configured network statement"], "correct": ["A loopback interface that is configured with the highest IP address on the router"], "multi": false, "explanation": "Absent a manually configured router-id, OSPF next prefers the highest IPv4 address among configured loopback interfaces (since loopbacks are stable, non-routable addresses), and only falls back to the highest active physical interface address if no loopback exists."}, {"id": "m2-2.7.5-26", "section": "2.7.5", "sectionTitle": "Module Quiz - Single-Area OSPFv2 Configuration", "question": "An OSPF router has three directly connected networks: 10.1.0.0/16, 10.1.1.0/16, and 10.1.2.0/16. Which OSPF network command would advertise only the 10.1.1.0 network to neighbors?", "choices": ["router(config-router)# network 10.1.0.0 0.0.15.255 area 0", "router(config-router)# network 10.1.1.0 0.0.0.0 area 0", "router(config-router)# network 10.1.1.0 0.0.0.255 area 0", "router(config-router)# network 10.1.1.0 0.0.255.255 area 0"], "correct": ["router(config-router)# network 10.1.1.0 0.0.0.255 area 0"], "multi": false, "explanation": "To match only the 10.1.1.0 network, the wildcard mask needs to match the first 24 bits exactly, which the 0.0.0.255 wildcard does (equivalent to a 255.255.255.0 mask)."}, {"id": "m2-2.7.5-27", "section": "2.7.5", "sectionTitle": "Module Quiz - Single-Area OSPFv2 Configuration", "question": "By default, what is the OSPF cost for a link with Gigabit Ethernet interfaces?", "choices": ["1", "100", "10000", "100000000"], "correct": ["1"], "multi": false, "explanation": "With the default reference bandwidth, OSPF's cost formula rounds any bandwidth of 100 Mb/s or higher down to an integer cost of 1, so Gigabit Ethernet defaults to a cost of 1."}, {"id": "m2-2.7.5-28", "section": "2.7.5", "sectionTitle": "Module Quiz - Single-Area OSPFv2 Configuration", "question": "An administrator is configuring single-area OSPF on a router. One of the networks that must be advertised is 64.100.1.64 255.255.255.192. Which OSPF network statement should be configured?", "choices": ["network 64.100.1.64 0.0.0.15 area 0", "network 64.100.1.64 0.0.0.31 area 0", "network 64.100.1.64 0.0.0.63 area 0", "network 64.100.1.64 0.0.0.127 area 0"], "correct": ["network 64.100.1.64 0.0.0.63 area 0"], "multi": false, "explanation": "The subnet mask 255.255.255.192 (/26) has a wildcard equivalent of 0.0.0.63 (255.255.255.255 minus 255.255.255.192), so that's the wildcard mask the network statement needs."}, {"id": "m2-2.7.5-29", "section": "2.7.5", "sectionTitle": "Module Quiz - Single-Area OSPFv2 Configuration", "question": "Which of these factors will prevent two routers from forming an OSPFv2 adjacency? (Choose two.)", "choices": ["Mismatched Cisco IOS versions", "Mismatched Ethernet interfaces (for example, Fa0/0 to G0/0)", "Mismatched OSPF Hello or Dead timers", "Mismatched subnet masks on the link interfaces", "Use of private IP addresses on the link interfaces"], "correct": ["Mismatched OSPF Hello or Dead timers", "Mismatched subnet masks on the link interfaces"], "multi": true, "explanation": "Adjacencies fail to form over mismatched subnet masks, mismatched Hello/Dead timers, mismatched network types, or a missing/incorrect network command. Differing IOS versions, differing physical interface types, and the use of private addressing don't by themselves prevent adjacency formation."}]};
+
+  var MODULE_META = [
+    {
+      id: "module1",
+      number: 1,
+      title: "Single-Area OSPF Concepts",
+      accent: "#7c8fe0",
+      accentSoft: "#edf0fc"
+    },
+    {
+      id: "module2",
+      number: 2,
+      title: "Single-Area OSPFv2 Configuration",
+      accent: "#6fbf9b",
+      accentSoft: "#e6f6ef"
+    }
+  ];
+
+  var STORAGE_KEY = "ospf-quiz-session-v1";
+  var app = document.getElementById("app");
+  var session = null; // active / resumable session
+
+  /* ---------------- storage helpers ----------------
+     Prefer the app's own persistent key-value storage (window.storage)
+     when it's present. When this file is opened as a plain local HTML
+     file (no host environment providing window.storage), fall back to
+     the browser's own localStorage so progress is still saved. */
+
+  var storageMode = detectStorageMode();
+
+  function detectStorageMode() {
+    if (
+      window.storage &&
+      typeof window.storage.get === "function" &&
+      typeof window.storage.set === "function" &&
+      typeof window.storage.delete === "function"
+    ) {
+      return "app";
+    }
+    try {
+      if (window.localStorage) {
+        var testKey = "__ospf_quiz_probe__";
+        window.localStorage.setItem(testKey, "1");
+        window.localStorage.removeItem(testKey);
+        return "local";
+      }
+    } catch (e) {}
+    return "none";
+  }
+
+  function persist() {
+    if (!session) return;
+    var data = JSON.stringify(session);
+    if (storageMode === "app") {
+      try {
+        var p = window.storage.set(STORAGE_KEY, data, false);
+        if (p && p.catch) p.catch(function () {});
+      } catch (e) {}
+    } else if (storageMode === "local") {
+      try {
+        window.localStorage.setItem(STORAGE_KEY, data);
+      } catch (e) {}
+    }
+  }
+
+  function wipeSaved() {
+    if (storageMode === "app") {
+      try {
+        var p = window.storage.delete(STORAGE_KEY, false);
+        if (p && p.catch) p.catch(function () {});
+      } catch (e) {}
+    } else if (storageMode === "local") {
+      try {
+        window.localStorage.removeItem(STORAGE_KEY);
+      } catch (e) {}
+    }
+  }
+
+  function loadSaved() {
+    if (storageMode === "app") {
+      return new Promise(function (resolve) {
+        try {
+          window.storage
+            .get(STORAGE_KEY, false)
+            .then(function (res) {
+              if (res && res.value) {
+                try {
+                  resolve(JSON.parse(res.value));
+                } catch (e) {
+                  resolve(null);
+                }
+              } else {
+                resolve(null);
+              }
+            })
+            .catch(function () {
+              resolve(null);
+            });
+        } catch (e) {
+          resolve(null);
+        }
+      });
+    }
+    if (storageMode === "local") {
+      return new Promise(function (resolve) {
+        try {
+          var raw = window.localStorage.getItem(STORAGE_KEY);
+          resolve(raw ? JSON.parse(raw) : null);
+        } catch (e) {
+          resolve(null);
+        }
+      });
+    }
+    return Promise.resolve(null);
+  }
+
+  /* ---------------- helpers ---------------- */
+
+  function shuffle(arr) {
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = a[i];
+      a[i] = a[j];
+      a[j] = t;
+    }
+    return a;
+  }
+
+  function sameSet(a, b) {
+    if (a.length !== b.length) return false;
+    var sa = a.slice().sort();
+    var sb = b.slice().sort();
+    for (var i = 0; i < sa.length; i++) {
+      if (sa[i] !== sb[i]) return false;
+    }
+    return true;
+  }
+
+  function moduleMeta(id) {
+    for (var i = 0; i < MODULE_META.length; i++) {
+      if (MODULE_META[i].id === id) return MODULE_META[i];
+    }
+    return MODULE_META[0];
+  }
+
+  function buildSession(moduleId) {
+    var pool = QUIZ_DATA[moduleId];
+    var questions = shuffle(pool).map(function (q) {
+      return {
+        id: q.id,
+        section: q.section,
+        question: q.question,
+        choices: shuffle(q.choices),
+        correct: q.correct,
+        multi: q.multi,
+        explanation: q.explanation
+      };
+    });
+    return {
+      moduleId: moduleId,
+      questions: questions,
+      currentIndex: 0,
+      answers: new Array(questions.length).fill(null),
+      score: 0,
+      status: "in-progress"
+    };
+  }
+
+  function el(tag, opts) {
+    var node = document.createElement(tag);
+    opts = opts || {};
+    if (opts.className) node.className = opts.className;
+    if (opts.text !== undefined) node.textContent = opts.text;
+    if (opts.html !== undefined) node.innerHTML = opts.html;
+    if (opts.attrs) {
+      for (var k in opts.attrs) node.setAttribute(k, opts.attrs[k]);
+    }
+    return node;
+  }
+
+  function clear(node) {
+    while (node.firstChild) node.removeChild(node.firstChild);
+  }
+
+  /* ---------------- menu screen ---------------- */
+
+  function renderMenu() {
+    clear(app);
+
+    var header = el("div", { className: "page-header" });
+    header.appendChild(el("h1", { text: "CCNA 3 Practice" }));
+    header.appendChild(
+      el("p", {
+        text: "Quick check-your-understanding quizzes for the OSPF modules."
+      })
+    );
+    app.appendChild(header);
+
+    if (session && session.status === "in-progress") {
+      var meta = moduleMeta(session.moduleId);
+      var card = el("div", { className: "resume-card" });
+      var textWrap = el("div", { className: "resume-text" });
+      textWrap.appendChild(
+        el("div", { className: "resume-label", text: "Continue where you left off" })
+      );
+      textWrap.appendChild(
+        el("div", {
+          className: "resume-detail",
+          text:
+            "Module " +
+            meta.number +
+            " · Question " +
+            (session.currentIndex + 1) +
+            " of " +
+            session.questions.length
+        })
+      );
+      card.appendChild(textWrap);
+      var resumeBtn = el("button", { className: "btn btn-primary", text: "Resume" });
+      resumeBtn.addEventListener("click", function () {
+        renderQuiz();
+      });
+      card.appendChild(resumeBtn);
+      app.appendChild(card);
+    }
+
+    var list = el("div", { className: "module-list" });
+
+    MODULE_META.forEach(function (m) {
+      var count = QUIZ_DATA[m.id] ? QUIZ_DATA[m.id].length : 0;
+      var tile = el("button", { className: "module-tile" });
+      tile.style.setProperty("--tile-accent", m.accent);
+      tile.style.setProperty("--tile-accent-soft", m.accentSoft);
+
+      var num = el("div", { className: "num", text: String(m.number) });
+      var info = el("div", { className: "info" });
+      info.appendChild(el("div", { className: "title", text: "Module " + m.number }));
+      info.appendChild(el("div", { className: "subtitle", text: m.title }));
+      var countPill = el("div", { className: "count", text: count + " questions" });
+
+      tile.appendChild(num);
+      tile.appendChild(info);
+      tile.appendChild(countPill);
+
+      tile.addEventListener("click", function () {
+        session = buildSession(m.id);
+        persist();
+        renderQuiz();
+      });
+
+      list.appendChild(tile);
+    });
+
+    app.appendChild(list);
+    app.appendChild(
+      el("div", { className: "menu-footnote", text: "More modules will be added here soon." })
+    );
+  }
+
+  /* ---------------- quiz screen ---------------- */
+
+  function currentAnswer() {
+    return session.answers[session.currentIndex];
+  }
+
+  function setAnswer(a) {
+    session.answers[session.currentIndex] = a;
+  }
+
+  function renderQuiz() {
+    if (!session) {
+      renderMenu();
+      return;
+    }
+    clear(app);
+
+    var q = session.questions[session.currentIndex];
+    var total = session.questions.length;
+    var meta = moduleMeta(session.moduleId);
+
+    var topbar = el("div", { className: "topbar" });
+    var menuBtn = el("button", { className: "btn btn-ghost", text: "← Menu" });
+    menuBtn.addEventListener("click", function () {
+      renderMenu();
+    });
+    topbar.appendChild(menuBtn);
+    topbar.appendChild(
+      el("div", { className: "module-name", text: "Module " + meta.number })
+    );
+    app.appendChild(topbar);
+
+    var track = el("div", { className: "progress-track" });
+    var fill = el("div", { className: "progress-fill" });
+    fill.style.width = Math.round((session.currentIndex / total) * 100) + "%";
+    track.appendChild(fill);
+    app.appendChild(track);
+    app.appendChild(
+      el("div", {
+        className: "progress-label",
+        text: "Question " + (session.currentIndex + 1) + " of " + total
+      })
+    );
+
+    var card = el("div", { className: "card" });
+    card.appendChild(el("div", { className: "section-tag", text: "Section " + q.section }));
+    card.appendChild(el("div", { className: "question-text", text: q.question }));
+
+    var saved = currentAnswer();
+    var checked = !!(saved && saved.checked);
+    var requiredCount = q.multi ? q.correct.length : 1;
+
+    if (q.multi) {
+      card.appendChild(
+        el("div", {
+          className: "multi-hint",
+          text: "Select " + requiredCount + " answers."
+        })
+      );
+    }
+
+    var choicesWrap = el("div", { className: "choices" });
+    var inputs = [];
+
+    q.choices.forEach(function (choiceText, i) {
+      var isMulti = q.multi;
+      var inputId = "choice-" + i;
+      var label = el("label", {
+        className: "choice" + (isMulti ? " multi" : "")
+      });
+
+      var input = el("input", {
+        attrs: {
+          type: isMulti ? "checkbox" : "radio",
+          name: "choice-group",
+          id: inputId
+        }
+      });
+      input.value = choiceText;
+
+      var wasSelected = saved && saved.selected && saved.selected.indexOf(choiceText) !== -1;
+      if (wasSelected) input.checked = true;
+
+      label.appendChild(input);
+      label.appendChild(el("span", { className: "mark" }));
+      label.appendChild(el("span", { className: "choice-text", text: choiceText }));
+
+      if (checked) {
+        input.disabled = true;
+        label.classList.add("disabled");
+        var isCorrectChoice = q.correct.indexOf(choiceText) !== -1;
+        if (isCorrectChoice) {
+          label.classList.add("is-correct");
+        } else if (wasSelected) {
+          label.classList.add("is-wrong");
+        }
+      }
+
+      choicesWrap.appendChild(label);
+      inputs.push(input);
+    });
+
+    card.appendChild(choicesWrap);
+
+    var actionBtn = el("button", { className: "btn btn-primary" });
+
+    if (!checked) {
+      actionBtn.textContent = "Check Answer";
+      actionBtn.disabled = true;
+
+      function refreshInputsState() {
+        var checkedCount = inputs.filter(function (i) {
+          return i.checked;
+        }).length;
+
+        if (q.multi) {
+          inputs.forEach(function (i) {
+            i.disabled = !i.checked && checkedCount >= requiredCount;
+          });
+          actionBtn.disabled = checkedCount !== requiredCount;
+        } else {
+          actionBtn.disabled = checkedCount < 1;
+        }
+
+        setAnswer({
+          selected: inputs
+            .filter(function (i) {
+              return i.checked;
+            })
+            .map(function (i) {
+              return i.value;
+            }),
+          checked: false,
+          isCorrect: null
+        });
+        persist();
+      }
+
+      inputs.forEach(function (input) {
+        input.addEventListener("change", refreshInputsState);
+      });
+
+      if (saved && saved.selected && saved.selected.length) {
+        refreshInputsState();
+      }
+
+      actionBtn.addEventListener("click", function () {
+        var selected = inputs
+          .filter(function (i) {
+            return i.checked;
+          })
+          .map(function (i) {
+            return i.value;
+          });
+        var isCorrect = sameSet(selected, q.correct);
+        setAnswer({ selected: selected, checked: true, isCorrect: isCorrect });
+        if (isCorrect) session.score += 1;
+        persist();
+        renderQuiz();
+      });
+
+      card.appendChild(actionBtn);
+    } else {
+      var feedback = el("div", {
+        className: "feedback " + (saved.isCorrect ? "correct" : "wrong")
+      });
+      feedback.appendChild(
+        el("div", {
+          className: "verdict",
+          text: saved.isCorrect ? "Correct!" : "Not quite."
+        })
+      );
+      feedback.appendChild(el("div", { className: "explain", text: q.explanation }));
+      card.appendChild(feedback);
+
+      var isLast = session.currentIndex === total - 1;
+      actionBtn.textContent = isLast ? "Finish Quiz" : "Next Question";
+      actionBtn.addEventListener("click", function () {
+        if (isLast) {
+          renderResults();
+        } else {
+          session.currentIndex += 1;
+          persist();
+          renderQuiz();
+        }
+      });
+      card.appendChild(actionBtn);
+    }
+
+    app.appendChild(card);
+  }
+
+  /* ---------------- results screen ---------------- */
+
+  function renderResults() {
+    session.status = "completed";
+    wipeSaved();
+
+    clear(app);
+
+    var total = session.questions.length;
+    var score = session.score;
+    var percent = Math.round((score / total) * 100);
+    var meta = moduleMeta(session.moduleId);
+
+    var header = el("div", { className: "page-header" });
+    header.appendChild(el("h1", { text: "Quiz Complete" }));
+    header.appendChild(
+      el("p", { text: "Module " + meta.number + " · " + meta.title })
+    );
+    app.appendChild(header);
+
+    var card = el("div", { className: "card" });
+    var scoreBlock = el("div", { className: "score-block" });
+    scoreBlock.appendChild(
+      el("div", { className: "score-num", text: score + " / " + total })
+    );
+    scoreBlock.appendChild(
+      el("div", { className: "score-sub", text: percent + "% correct" })
+    );
+
+    var msg;
+    if (percent === 100) msg = "Perfect run. That whole module is locked in.";
+    else if (percent >= 85) msg = "Strong grasp of this module.";
+    else if (percent >= 70) msg = "Solid. A little more review and this is locked in.";
+    else if (percent >= 50) msg = "Getting there — worth another pass.";
+    else msg = "Good starting point — try it again to build recall.";
+    scoreBlock.appendChild(el("div", { className: "score-msg", text: msg }));
+    card.appendChild(scoreBlock);
+
+    var missed = [];
+    session.answers.forEach(function (a, i) {
+      if (a && a.checked && !a.isCorrect) {
+        missed.push({ q: session.questions[i], a: a });
+      }
+    });
+
+    if (missed.length) {
+      card.appendChild(
+        el("div", {
+          className: "review-heading",
+          text: "Review (" + missed.length + ")"
+        })
+      );
+      var list = el("div", { className: "review-list" });
+      missed.forEach(function (item) {
+        var box = el("div", { className: "review-item" });
+        box.appendChild(el("div", { className: "rq", text: item.q.question }));
+        box.appendChild(
+          buildAnswerLine("Your answer: ", item.a.selected.join(", "), "wrong")
+        );
+        box.appendChild(
+          buildAnswerLine("Correct answer: ", item.q.correct.join(", "), "right")
+        );
+        list.appendChild(box);
+      });
+      card.appendChild(list);
+    } else {
+      card.appendChild(
+        el("div", { className: "all-correct", text: "Every question answered correctly." })
+      );
+    }
+
+    var btnRow = el("div", { className: "btn-row" });
+    var tryAgainBtn = el("button", { className: "btn btn-primary", text: "Try Again" });
+    tryAgainBtn.addEventListener("click", function () {
+      var moduleId = session.moduleId;
+      session = buildSession(moduleId);
+      persist();
+      renderQuiz();
+    });
+    var menuBtn = el("button", { className: "btn btn-outline", text: "Back to Menu" });
+    menuBtn.addEventListener("click", function () {
+      session = null;
+      renderMenu();
+    });
+    btnRow.appendChild(tryAgainBtn);
+    btnRow.appendChild(menuBtn);
+    card.appendChild(btnRow);
+
+    app.appendChild(card);
+  }
+
+  function buildAnswerLine(label, value, cls) {
+    var line = el("div", { className: "ra " + cls });
+    line.appendChild(document.createTextNode(label));
+    var b = el("b", { text: value });
+    line.appendChild(b);
+    return line;
+  }
+
+  /* ---------------- init ---------------- */
+
+  loadSaved().then(function (saved) {
+    if (saved && saved.status === "in-progress" && Array.isArray(saved.questions)) {
+      session = saved;
+    }
+    renderMenu();
+  });
+})();
+
+</script>
+</body>
+</html>
